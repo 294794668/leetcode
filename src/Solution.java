@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +37,7 @@ public class Solution {
         for (int i = 0; i < nums.length; i++) {
             int temp = target - nums[i];
             if (map.containsKey(temp)) {
-                return new int[] {map.get(temp), i};
+                return new int[]{map.get(temp), i};
             }
             map.put(nums[i], i);
         }
@@ -67,6 +66,7 @@ public class Solution {
             val = x;
         }
     }
+
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode firstNode = new ListNode(0);
@@ -177,20 +177,67 @@ public class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int[] all = new int[nums1.length + nums2.length];
         System.arraycopy(nums1, 0, all, 0, nums1.length);
-        System.arraycopy(nums2, 0, all, nums1.length - 1, nums2.length);
-        for (int i = 0; i < all.length; i++) {
-            Arrays.sort(all);
-        }
-        if (all.length == 1) {
-            return all[0];
-        }
+        System.arraycopy(nums2, 0, all, nums1.length, nums2.length);
+        Arrays.sort(all);
         if (all.length % 2 == 1) {
-            return all[all.length / 2 + 1];
+            return all[all.length / 2];
         }
-        return (all[all.length / 2] + all[all.length / 2 + 1]) / 2;
+        return (all[all.length / 2] + all[(all.length - 2) / 2]) / 2d;
+    }
+
+    public static double findMedianSortedArraysBest(int[] nums1, int[] nums2) {
+        int m = nums1.length;
+        int n = nums2.length;
+        if (m >= n) {
+            return findBinary(nums1, nums2, (nums2.length + 1) / 2);
+        }
+        return findBinary(nums2, nums1, (nums1.length + 1) / 2);
+    }
+
+    private static double findBinary(int[] bNum, int[] sNum, int i) {
+        int j = (bNum.length + sNum.length + 1) / 2 - i; // 2(j+i)  = bNum.length + sNum.length + 1
+        if (j > sNum.length) {
+            findBinary(bNum, sNum, i + (i + 1) / 2);
+        }
+        if (j < 1) {
+            findBinary(bNum, sNum, i - (i + 1) / 2);
+        }
+
+        int b_s = bNum[i - 1];
+        int s_s = sNum[j - 1];
+        if (i == bNum.length) {
+            int s_b = sNum[j];
+            if ((bNum.length + sNum.length) % 2 == 1) {
+                return s_b;
+            }
+            return (Math.max(s_s, b_s) + s_b) / 2d;
+        }
+        if (j == sNum.length) {
+            
+        }
+
+        int b_b = bNum[i];
+        int s_b = sNum[j];
+
+        //2个数组都已找到
+        if (b_s <= s_b && s_s <= b_b) {
+            if ((bNum.length + sNum.length) % 2 == 1) {
+                return Math.min(s_b, b_b);
+            }
+            return (Math.max(s_s, b_s) + Math.min(s_b, b_b)) / 2d;
+        }
+        //i有点小
+        if (s_s > b_b) {
+            findBinary(bNum, sNum, i + (i + 1) / 2);
+        }
+        //i有点大
+        if (b_s > s_b) {
+            findBinary(bNum, sNum, i - (i + 1) / 2);
+        }
+        return 0d;
     }
 
     public static void main(String[] args) {
-        System.out.println(1/2);
+        System.out.println(findMedianSortedArraysBest(new int[]{1, 3}, new int[]{2}));
     }
 }
