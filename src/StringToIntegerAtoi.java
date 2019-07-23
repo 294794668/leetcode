@@ -10,7 +10,8 @@ public class StringToIntegerAtoi {
      * <p>
      * 首先，该函数会根据需要丢弃无用的开头空格字符，直到寻找到第一个非空格的字符为止。
      * <p>
-     * 当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。
+     * 当我们寻找到的第一个非空字符为正或者负号时，则将该符号与之后面尽可能多的连续数字组合起来，作为该整数的正负号；
+     * 假如第一个非空字符是数字，则直接将其与之后连续的数字字符组合起来，形成整数。
      * <p>
      * 该字符串除了有效的整数部分之后也可能会存在多余的字符，这些字符可以被忽略，它们对于函数不应该造成影响。
      * <p>
@@ -20,7 +21,8 @@ public class StringToIntegerAtoi {
      * <p>
      * 说明：
      * <p>
-     * 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，qing返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
+     * 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，
+     * 请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 。
      * <p>
      * 示例 1:
      * <p>
@@ -59,7 +61,74 @@ public class StringToIntegerAtoi {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public int myAtoi(String str) {
-
-        return 0;
+        char[] chars = str.toCharArray();
+        int result = 0;
+        int flag = 1;
+        boolean firstChar = false;
+        for (int i = 0; i < chars.length; i++) {
+            char aChar = chars[i];
+            switch (aChar) {
+                case '-':
+                    if (!firstChar) {
+                        flag = -1;
+                        firstChar = true;
+                    } else {
+                        return flag * result;
+                    }
+                    break;
+                case '+':
+                    if (!firstChar) {
+                        firstChar = true;
+                    } else {
+                        return flag * result;
+                    }
+                    break;
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    if (!firstChar) {
+                        firstChar = true;
+                    }
+                    if (Integer.MAX_VALUE / 10 > result) {
+                        result = result * 10 + (aChar - 48);
+                    } else if (Integer.MAX_VALUE / 10 == result) {
+                        if (flag == 1) {
+                            if (7 > aChar - 48) {
+                                result = result * 10 + (aChar - 48);
+                            } else {
+                                return Integer.MAX_VALUE;
+                            }
+                        }
+                        if (flag == -1) {
+                            if (8 > aChar - 48) {
+                                result = result * 10 + (aChar - 48);
+                            } else {
+                                return Integer.MIN_VALUE;
+                            }
+                        }
+                    } else {
+                        if (flag == 1) {
+                            return Integer.MAX_VALUE;
+                        }
+                        return Integer.MIN_VALUE;
+                    }
+                    break;
+                case ' ':
+                    if (firstChar) {
+                        return flag * result;
+                    }
+                    break;
+                default:
+                    return flag * result;
+            }
+        }
+        return flag * result;
     }
 }
