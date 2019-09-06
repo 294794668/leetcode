@@ -1,6 +1,6 @@
 /**
  * @author pengfei.cheng
- * @description
+ * @description 盛最多水的容器
  * @date 2019-09-06 17:20
  */
 public class ContainerWithMostWater {
@@ -19,6 +19,22 @@ public class ContainerWithMostWater {
         for (int i = 0; i < height.length - 1; i++) {
             for (int i1 = i + 1; i1 < height.length; i1++) {
                 max = Math.max(Math.min(height[i], height[i1]) * (i1 - i), max);
+            }
+        }
+        return max;
+    }
+
+
+    public int maxAreaBest(int[] height) {
+        int l = 0;
+        int r = height.length - 1;
+        int max = 0;
+        while (r - l > 0) {
+            max = Math.max(Math.min(height[r], height[l]) * (r - l), max);
+            if (height[r] > height[l]) {
+                l++;
+            } else {
+                r--;
             }
         }
         return max;
