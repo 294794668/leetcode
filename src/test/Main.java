@@ -7,6 +7,7 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
+        System.out.println(null == null);
 
         float i = 2.2f;
         float j = 2.2f;

@@ -61,42 +61,6 @@ public class RegularExpressionMatching {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public boolean isMatch(String s, String p) {
-        if (s.equals(p)) {
-            return true;
-        }
-        if (p.length() < 1) {
-            return false;
-        }
-        int pIndex = 0;
-        int[] point = new int[p.length()];
-        for (int i = 0; i < s.length(); i++) {
-            char sChar = s.charAt(i);
-            char pChar = p.charAt(pIndex);
-            if (isSame(sChar, pChar)) {
-                pIndex++;
-                continue;
-            }
-            if (pChar == '*') {
-                if (isSame(sChar, p.charAt(pIndex - 1))) {
-                    continue;
-                }
-                if (p.charAt(++pIndex) == sChar) {
-                    continue;
-                }
-                return false;
-            }
-            return false;
-        }
-        if (p.length() != pIndex + 1) {
-
-        }
         return true;
-    }
-
-    private boolean isSame(char a, char b) {
-        if ('.' == b) {
-            return true;
-        }
-        return a == b;
     }
 }
