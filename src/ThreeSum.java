@@ -73,15 +73,18 @@ public class ThreeSum {
             if (a > 0) {
                 break;
             }
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
             int m = i + 1;
             int n = nums.length - 1;
             while (m < n) {
-                if ((m > i + 1 && nums[m] == nums[m - 1]) || nums[m] + nums[n] + a > 0) {
-                    n--;
+                if ((m > i + 1 && nums[m] == nums[m - 1]) || nums[m] + nums[n] + a < 0) {
+                    m++;
                     continue;
                 }
-                if ((n < nums.length - 1 && nums[n] == nums[n + 1]) || nums[m] + nums[n] + a < 0) {
-                    m++;
+                if ((n < nums.length - 1 && nums[n] == nums[n + 1]) || nums[m] + nums[n] + a > 0) {
+                    n--;
                     continue;
                 }
                 if (nums[m] + nums[n] + a == 0) {
