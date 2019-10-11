@@ -1,3 +1,5 @@
+import sub.ListNode;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,15 +60,6 @@ public class Solution {
      * 输出：7 -> 0 -> 8
      * 原因：342 + 465 = 807
      */
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
-
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode firstNode = new ListNode(0);
