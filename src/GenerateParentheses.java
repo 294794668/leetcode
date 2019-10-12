@@ -1,3 +1,5 @@
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
  */
 public class GenerateParentheses {
     private List<String> list = new ArrayList<>();
+
     /**
      * 给出 n 代表生成括号的对数，请你写出一个函数，使其能够生成所有可能的并且有效的括号组合。
      * <p>
@@ -25,6 +28,7 @@ public class GenerateParentheses {
      * 链接：https://leetcode-cn.com/problems/generate-parentheses
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
+    //---------------------穷举法--------(((((((((((((
     public List<String> generateParenthesis(int n) {
         if (n == 0)
             return list;
@@ -45,23 +49,20 @@ public class GenerateParentheses {
             return;
         }
         //这层for循环用来生成 i==0时"(" 或 i==1时“）”
-        for (int i = 0; i < 2; i++) {
-            //先判断count状态
-            if (count > 0) {
+        //先判断count状态
+        if (count > 0) {
+            for (int i = 0; i < 2; i++) {
                 if (i == 0)
                     add(n, s + "(", count + 1);
                 else
                     add(n, s + ")", count - 1);
-            } else if (count == 0) {
-                if (i == 0)
-                    add(n, s + "(", count + 1);
-                else
-                    continue;
-            }
-
-        }//end for
+            }//end for
+        } else if (count == 0) {
+            add(n, s + "(", count + 1);
+        }
     }//end method
 
+    //---------------)))))))))))
     public static void main(String[] args) {
         GenerateParentheses generateParentheses = new GenerateParentheses();
         System.out.println(generateParentheses.generateParenthesis(5));
