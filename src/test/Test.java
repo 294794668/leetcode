@@ -1,31 +1,22 @@
 package test;
 
+import sub.ListNode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class Test {
     public static void main(String[] args) {
-//        System.out.println(16 << 1);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            Thread.currentThread().join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
 
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("1");
-        arrayList.trimToSize();
-        HashSet<String> hashSet = new HashSet<>();
-        hashSet.add(null);
-        System.out.println(hashSet.isEmpty());
-        HashMap<String, String> hashMap = new HashMap<>();
-        hashMap.put("", "");
-        hashMap.get("");
+    public ListNode revert(ListNode head) {
+        if (head.next == null) {
+            return head;
+        }
+        ListNode revert = revert(head.next);
+        head.next = null;
+        revert.next = head;
+        return head;
     }
 }
