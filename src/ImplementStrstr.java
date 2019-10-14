@@ -25,24 +25,27 @@ public class ImplementStrstr {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static int strStr(String haystack, String needle) {
-        if ("".equals(needle)) {
+        if (needle.length() == 0) {
             return 0;
         }
-        if (haystack.length() < needle.length()) {
+        if (haystack.length() == 0) {
             return -1;
         }
-        int a = 0;
-        while (haystack.length() - a >= needle.length()) {
-            int i = 0;
-            for (; i < needle.length(); i++) {
-                if (haystack.charAt(a + i) != needle.charAt(i)) {
-                    break;
+        char[] source = haystack.toCharArray();
+        char[] target = needle.toCharArray();
+        int sourceLength = haystack.length();
+        int targetLength = needle.length();
+
+        int max = sourceLength - targetLength;
+        for (int i = 0; i <= max; i++) {
+            while (source[i] != target[0] && ++i <= max) ;
+            if (i <= max) {
+                int k = 1;
+                for (int j = i + 1; k < targetLength && source[j] == target[k]; k++, j++) ;
+                if (k == targetLength) {
+                    return i;
                 }
             }
-            if (i == needle.length()) {
-                return a;
-            }
-            a++;
         }
         return -1;
     }
