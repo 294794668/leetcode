@@ -63,8 +63,7 @@ public class SubstringWithConcatenationOfAllWords {
             }
             Map<String, Integer> count1 = new HashMap<>();
             count1.put(map.get(index), 1);
-            int i = 1;
-            for (; i < words.length; i++) {
+            for (int i = 1; i < words.length; i++) {
                 int last = index + i * wordLength;
                 if (!map.containsKey(last)) {
                     continue a;
