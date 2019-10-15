@@ -37,7 +37,7 @@ public class DivideTwoIntegers {
             return dividend;
         }
         int quotient = 0;
-        boolean flag = (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0);
+        boolean flag = dividend > 0 ^ divisor > 0;
         boolean over = false;
         dividend = Math.abs(dividend);
         divisor = Math.abs(divisor);
