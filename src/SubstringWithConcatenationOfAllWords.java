@@ -36,8 +36,9 @@ public class SubstringWithConcatenationOfAllWords {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> integers = new ArrayList<>();
         if (words.length == 0 || "".equals(s)) {
-            return new ArrayList<>();
+            return integers;
         }
         int wordLength = words[0].length();
         int minBegin = s.length() - words.length * wordLength;
@@ -55,7 +56,6 @@ public class SubstringWithConcatenationOfAllWords {
                 i++;
             }
         }
-        List<Integer> integers = new ArrayList<>();
         a:
         for (Integer index : map.keySet()) {
             if (index > minBegin) {
@@ -83,6 +83,39 @@ public class SubstringWithConcatenationOfAllWords {
         return integers;
     }
 
+
+    public List<Integer> findSubstringBest(String s, String[] words) {
+        List<Integer> list = new ArrayList<>();
+        if (words.length == 0 || s.length() < words.length * words[0].length()) {
+            return list;
+        }
+        Map<String, Integer> map = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            map.put(words[i], map.getOrDefault(words[i], 0) + 1);
+        }
+        int listLen = words.length;
+        int wordLen = words[0].length();
+
+        for (int i = 0; i < wordLen; i++) {
+            for (int j = i; j <= s.length() - wordLen * listLen; j += wordLen) {
+                Map<String, Integer> map2 = new HashMap<>();
+                for (int k = listLen - 1; k >= 0; k--) {
+                    String temp = s.substring(j + k * wordLen, j + (k + 1) * wordLen);
+                    int val = map2.getOrDefault(temp, 0) + 1;
+                    if (val > map.getOrDefault(temp, 0)) {
+                        j += k * wordLen;
+                        break;
+                    }
+                    if (k == 0) {
+                        list.add(j);
+                    } else {
+                        map2.put(temp, val);
+                    }
+                }
+            }
+        }
+        return list;
+    }
 
     public static void main(String[] args) {
         System.out.println(findSubstring("aaaaaaaa", new String[]{"aa", "aa", "aa"}));
