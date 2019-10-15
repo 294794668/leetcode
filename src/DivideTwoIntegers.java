@@ -29,35 +29,55 @@ public class DivideTwoIntegers {
      * 链接：https://leetcode-cn.com/problems/divide-two-integers
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public int divide(int dividend, int divisor) {
+    public static int divide(int dividend, int divisor) {
         if (dividend == 0) {
             return 0;
         }
-        int i = 0;
-        boolean flag = (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0);
-        if (dividend == Integer.MIN_VALUE) {
-            dividend = Integer.MAX_VALUE;
+        if (divisor == 1) {
+            return dividend;
         }
-        dividend = (dividend < 0) ? -dividend : dividend;
-        divisor = (divisor < 0) ? -divisor : divisor;
-        if (divisor > dividend) {
+        int quotient = 0;
+        boolean flag = (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0);
+        boolean over = false;
+        dividend = Math.abs(dividend);
+        divisor = Math.abs(divisor);
+        if (dividend < 0 && divisor < 0) {
+            return 1;
+        }
+        if (divisor < 0) {
             return 0;
         }
-        i = 0;
-        while (dividend >= divisor) {
-            dividend -= divisor;
-            i++;
+        if (dividend < 0 && !flag && divisor == 1) {
+            return Integer.MAX_VALUE;
+        }
+        if (dividend < 0) {
+            dividend = Integer.MAX_VALUE;
+            over = true;
+        }
+        String dividendStr = Integer.toBinaryString(dividend);
+        String divisorStr = Integer.toBinaryString(divisor);
+        int dividendLength = dividendStr.length();
+        int divisorLength = divisorStr.length();
+        for (int i = dividendLength - divisorLength; i >= 0; i--) {
+            int a = dividend - (divisor << i);
+            quotient = quotient << 1;
+            if (a >= 0) {
+                dividend = a;
+                quotient++;
+            }
+        }
+        if (over) {
+            if (++dividend >= divisor) {
+                quotient++;
+            }
         }
         if (flag) {
-            i = -i;
+            quotient = -quotient;
         }
-        return i;
+        return quotient;
     }
 
     public static void main(String[] args) {
-        System.out.println(1 << 31);
-        System.out.println(Integer.MIN_VALUE);
-        System.out.println((1 << 31) - 1);
-        System.out.println(Integer.MAX_VALUE);
+        divide(Integer.MIN_VALUE, 2);
     }
 }
