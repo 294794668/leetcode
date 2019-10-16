@@ -28,20 +28,16 @@ public class NextPermutation {
             return;
         }
         int point = -1;
-        a:
         for (int i = nums.length - 2; i >= 0; i--) {
-            for (int j = i + 1; j < nums.length; j++) {
-                if (nums[i] < nums[j]) {
-                    point = i;
-                    break a;
-                }
+            if (nums[i] < nums[i + 1]) {
+                point = i;
+                break;
             }
         }
+        Arrays.sort(nums, point + 1, nums.length);
         if (point == -1) {
-            Arrays.sort(nums);
             return;
         }
-        Arrays.sort(nums, point + 1, nums.length);
         for (int i = point + 1; i < nums.length; i++) {
             if (nums[i] > nums[point]) {
                 int num = nums[point];
