@@ -22,20 +22,37 @@ public class NextPermutation {
      * 链接：https://leetcode-cn.com/problems/next-permutation
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public void nextPermutation(int[] nums) {
+    public static void nextPermutation(int[] nums) {
+        //1,3,2 → 2,1,3
         if (nums.length <= 1) {
             return;
         }
+        int point = -1;
+        a:
         for (int i = nums.length - 2; i >= 0; i--) {
-            if (nums[i] < nums[i + 1]) {
-                int tmp = nums[i + 1];
-                nums[i + 1] = nums[i];
-                nums[i] = tmp;
-                break;
-            }
-            if (i == 0) {
-                Arrays.sort(nums);
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] < nums[j]) {
+                    point = i;
+                    break a;
+                }
             }
         }
+        if (point == -1) {
+            Arrays.sort(nums);
+            return;
+        }
+        Arrays.sort(nums, point + 1, nums.length);
+        for (int i = point + 1; i < nums.length; i++) {
+            if (nums[i] > nums[point]) {
+                int num = nums[point];
+                nums[point] = nums[i];
+                nums[i] = num;
+                break;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        nextPermutation(new int[]{2, 3, 1});
     }
 }
