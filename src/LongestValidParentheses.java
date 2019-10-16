@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 /**
@@ -25,41 +27,33 @@ public class LongestValidParentheses {
      * 链接：https://leetcode-cn.com/problems/longest-valid-parentheses
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public int longestValidParentheses(String s) {
-        int length = 0;
+    public static int longestValidParentheses(String s) {
         int max = 0;
-        Stack<Character> stack = new Stack<>();
+        Stack<Map.Entry<Integer, Character>> stack = new Stack<>();
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) == ')' && !stack.empty()) {
-                int j = 0;
-                Character pop = null;
-                while (!stack.empty() && (pop = stack.pop()) == '2') {
-                    j++;
-                }
-                if (pop == ')') {
-                    stack.push(')');
-                }
-                for (int i1 = 0; i1 < j; i1++) {
-                    stack.push('2');
-                }
-                if (pop == '(') {
-                    stack.push('2');
-                }
-                if (pop == ')') {
-                    stack.push(')');
+                Map.Entry<Integer, Character> pop = stack.pop();
+                if (pop.getValue() != '(') {
+                    stack.push(pop);
+                    stack.push(new HashMap.SimpleEntry<>(i, s.charAt(i)));
                 }
             } else {
-                stack.push(s.charAt(i));
+                stack.push(new HashMap.SimpleEntry<>(i, s.charAt(i)));
             }
         }
-        for (Character character : stack) {
-            if (character == '2') {
-                length += 2;
-            } else {
-                max = Math.max(max, length);
-                length = 0;
-            }
+        if (stack.empty()) {
+            return s.length();
         }
-        return Math.max(max, length);
+        int index = -1;
+        for (Map.Entry<Integer, Character> integerCharacterEntry : stack) {
+            int i = integerCharacterEntry.getKey() - index - 1;
+            index = integerCharacterEntry.getKey();
+            max = Math.max(max, i);
+        }
+        return Math.max(max, s.length() - index - 1);
+    }
+
+    public static void main(String[] args) {
+        longestValidParentheses("(()(((()");
     }
 }
