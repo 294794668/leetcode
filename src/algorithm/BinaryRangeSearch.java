@@ -16,28 +16,39 @@ public class BinaryRangeSearch {
      * 有=时 include 为 true
      * 22223 > 2 返回4，>=2 返回0
      */
-    public int[] binaryRangeSearch(int[] array, int begin, boolean includeBegin, int end, boolean includeEnd) {
+    public static int[] binaryRangeSearch(int[] array, int begin, boolean includeBegin, int end, boolean includeEnd) {
         if (begin > end) {
             return new int[]{};
         }
         int i = recursiveBinarySearch(array, begin, 0, array.length - 1, includeBegin);
-        int i1 = recursiveBinarySearch(array, end, 0, array.length - 1, !includeEnd);
-        return null;
+        int j = recursiveBinarySearch(array, end, i, array.length - 1, !includeEnd);
+        int[] result = new int[j - i + 1];
+        System.arraycopy(array, i, result, 0, result.length);
+        return result;
     }
 
     private static int recursiveBinarySearch(int[] sortArray, int element, int start, int end, boolean left) {
-        int middle;
-        if (element == sortArray[(middle = (start + end) / 2)] && left) {
-            return middle;
-        }
         if (start == end) {
-            return -1;
+            return start;
         }
+        int middle = (start + end - 1) / 2;
         if (element > (sortArray[middle])) {
             start = middle;
+        } else if (element < (sortArray[middle])) {
+            end = middle;
+        } else if (left) {
+            end = middle;
         } else {
-            end = middle / 2;
+            start = middle;
         }
         return recursiveBinarySearch(sortArray, element, start, end, left);
+    }
+
+    public static void main(String[] args) {
+        int[] ints = binaryRangeSearch(new int[]{2, 3, 3, 3, 3, 3, 3, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 11, 12, 13, 14}, 1, true, 99, true);
+        for (int i = 0; i < ints.length; i++) {
+            System.out.print(ints[i]);
+            System.out.print(",");
+        }
     }
 }

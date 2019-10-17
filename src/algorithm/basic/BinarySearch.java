@@ -55,12 +55,12 @@ public class BinarySearch {
         if (element > (sortArray[middle])) {
             start = middle;
         } else {
-            end = middle / 2;
+            end = middle;
         }
         return recursiveBinarySearch(sortArray, element, start, end);
     }
 
     public static void main(String[] args) {
-        System.out.println(binarySearch(new int[]{1, 2, 3, 4, 5, 6}, 4));
+        System.out.println(binarySearch(new int[]{1, 2, 3, 4, 5, 6}, 5));
     }
 }
