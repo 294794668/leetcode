@@ -24,7 +24,6 @@ public class BinarySearch {
         int last = 0;
         int next = sortArray.length - 1;
         int middle;
-        int i = 0;
         while (element != (sortArray[(middle = (last + next) / 2)])) {
             if (last == next) {
                 return -1;
@@ -45,7 +44,7 @@ public class BinarySearch {
         return recursiveBinarySearch(sortArray, element, 0, sortArray.length - 1);
     }
 
-    private static int recursiveBinarySearch(int[] sortArray, int element, int start, int end) {
+    public static int recursiveBinarySearch(int[] sortArray, int element, int start, int end) {
         int middle;
         if (element == sortArray[(middle = (start + end) / 2)]) {
             return middle;
