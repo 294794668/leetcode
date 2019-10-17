@@ -20,8 +20,8 @@ public class BinaryRangeSearch {
         if (begin > end) {
             return new int[]{};
         }
-        int i = recursiveBinarySearch(array, begin, 0, array.length - 1, includeBegin);
-        int j = recursiveBinarySearch(array, end, i, array.length - 1, !includeEnd);
+        int i = recursiveBinarySearch(array, begin, 0, array.length - 1, true);
+        int j = recursiveBinarySearch(array, end, i, array.length - 1, false);
         int[] result = new int[j - i + 1];
         System.arraycopy(array, i, result, 0, result.length);
         return result;
@@ -31,11 +31,12 @@ public class BinaryRangeSearch {
         if (start == end) {
             return start;
         }
-        int middle = (start + end - 1) / 2;
+//        int n = left ? 1 : 0;
+        int middle = (start + end) / 2;
         if (element > (sortArray[middle])) {
-            start = middle;
+            start = middle + 1;
         } else if (element < (sortArray[middle])) {
-            end = middle;
+            end = middle - 1;
         } else if (left) {
             end = middle;
         } else {
@@ -45,10 +46,7 @@ public class BinaryRangeSearch {
     }
 
     public static void main(String[] args) {
-        int[] ints = binaryRangeSearch(new int[]{2, 3, 3, 3, 3, 3, 3, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 11, 12, 13, 14}, 1, true, 99, true);
-        for (int i = 0; i < ints.length; i++) {
-            System.out.print(ints[i]);
-            System.out.print(",");
-        }
+        int[] ints1 = {2, 3, 3, 3, 3, 3, 3, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 11, 12, 13, 14};
+        System.out.println(recursiveBinarySearch(ints1, 3, 0, ints1.length - 1, true));
     }
 }
