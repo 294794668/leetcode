@@ -31,6 +31,12 @@ public class SearchInRotatedSortedArray {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public int search(int[] nums, int target) {
+        int n = nums.length - 1;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] > nums[i + 1]) {
+                return i;
+            }
+        }
         return 0;
     }
 }
