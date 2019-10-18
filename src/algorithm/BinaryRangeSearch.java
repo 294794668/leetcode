@@ -1,7 +1,5 @@
 package algorithm;
 
-import algorithm.basic.BinarySearch;
-
 import java.util.Arrays;
 
 /**
@@ -20,33 +18,37 @@ public class BinaryRangeSearch {
         if (begin > end) {
             return new int[]{};
         }
-        int i = recursiveBinarySearch(array, begin, 0, array.length - 1, true);
-        int j = recursiveBinarySearch(array, end, i, array.length - 1, false);
+        int i = binaryRangeSearch0(array, begin, 0, array.length - 1, includeBegin, true);
+        if (i >= array.length) {
+            return new int[]{};
+        }
+        int j = binaryRangeSearch0(array, end, i, array.length - 1, !includeEnd, false);
+        if (j <= 0) {
+            return new int[]{};
+        }
         int[] result = new int[j - i + 1];
         System.arraycopy(array, i, result, 0, result.length);
         return result;
     }
 
-    private static int recursiveBinarySearch(int[] sortArray, int element, int start, int end, boolean left) {
-        if (start == end) {
-            return start;
+    private static int binaryRangeSearch0(int[] array, int element, int start, int end, boolean left, boolean size) {
+        while (start <= end) {
+            int mid = (start + end) >>> 1;
+            int mVal = array[mid];
+            if (mVal > element)
+                end = mid - 1;
+            else if (mVal < element)
+                start = mid + 1;
+            else if (left)
+                end = mid - 1;
+            else
+                start = mid + 1;
         }
-//        int n = left ? 1 : 0;
-        int middle = (start + end) / 2;
-        if (element > (sortArray[middle])) {
-            start = middle + 1;
-        } else if (element < (sortArray[middle])) {
-            end = middle - 1;
-        } else if (left) {
-            end = middle;
-        } else {
-            start = middle;
-        }
-        return recursiveBinarySearch(sortArray, element, start, end, left);
+        return size ? start : end;
     }
 
     public static void main(String[] args) {
-        int[] ints1 = {2, 3, 3, 3, 3, 3, 3, 4, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 11, 12, 13, 14};
-        System.out.println(recursiveBinarySearch(ints1, 3, 0, ints1.length - 1, true));
+        int[] ints1 = {4, 5, 5, 5, 6};
+        System.out.println(Arrays.toString(binaryRangeSearch(ints1, 5, true, 100, true)));
     }
 }
