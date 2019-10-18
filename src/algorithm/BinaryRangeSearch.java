@@ -48,7 +48,7 @@ public class BinaryRangeSearch {
     }
 
     public static void main(String[] args) {
-        int[] ints1 = {4, 5, 5, 5, 6};
-        System.out.println(Arrays.toString(binaryRangeSearch(ints1, 5, true, 100, true)));
+        int[] ints1 = {5, 5, 5, 5, 5};
+        System.out.println(Arrays.toString(binaryRangeSearch(ints1, 5, false, 100, true)));
     }
 }
