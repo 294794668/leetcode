@@ -66,32 +66,25 @@ public class ArraySort {
         if (low >= high) {
             return;
         }
-        int m = low;
-        int n = high;
-        int basic = array[m];
-        int index = m;
+        int m = low, n = high, basic = array[m], index = m;
         boolean flag = true;
         while (m < n) {
             if (flag) {
                 if (array[n] < basic) {
+                    flag = false;
                     array[index] = array[n];
                     index = n;
-                    n--;
-                } else {
-                    n--;
-                    continue;
                 }
+                n--;
             } else {
                 if (array[m] > basic) {
+                    flag = true;
                     array[index] = array[m];
                     index = m;
-                    m++;
-                } else {
-                    m++;
-                    continue;
                 }
+                m++;
             }
-            flag = !flag;
+
         }
         array[index] = basic;
         quickSort(array, low, index - 1);
@@ -99,8 +92,30 @@ public class ArraySort {
     }
 
 
+    //快速排序
+    public static void quick_sort(int s[], int l, int r) {
+        if (l < r) {
+            int i = l, j = r, x = s[l];
+            while (i < j) {
+                while (i < j && s[j] >= x) // 从右向左找第一个小于x的数
+                    j--;
+                if (i < j)
+                    s[i++] = s[j];
+
+                while (i < j && s[i] < x) // 从左向右找第一个大于等于x的数
+                    i++;
+                if (i < j)
+                    s[j--] = s[i];
+            }
+            s[i] = x;
+            quick_sort(s, l, i - 1); // 递归调用
+            quick_sort(s, i + 1, r);
+        }
+    }
+
+
     public static void main(String[] args) {
-        int[] array = new int[]{8, 9, 7, 6, 5, 4, 3, 2, 1, 0};
+        int[] array = new int[]{5, 8, 9, 7, 6, 5, 5, 5, 4, 3, 2, 1, 5, 0};
         System.out.println(Arrays.toString(array));
         ArraySort.quickSort(array);
         System.out.println(Arrays.toString(array));
