@@ -63,22 +63,46 @@ public class ArraySort {
     }
 
     public static void quickSort(int[] array, int low, int high) {
-        if (low == high) {
+        if (low >= high) {
             return;
         }
         int m = low;
         int n = high;
+        int basic = array[m];
+        int index = m;
+        boolean flag = true;
         while (m < n) {
-
+            if (flag) {
+                if (array[n] < basic) {
+                    array[index] = array[n];
+                    index = n;
+                    n--;
+                } else {
+                    n--;
+                    continue;
+                }
+            } else {
+                if (array[m] > basic) {
+                    array[index] = array[m];
+                    index = m;
+                    m++;
+                } else {
+                    m++;
+                    continue;
+                }
+            }
+            flag = !flag;
         }
-        quickSort(array, low, high);
+        array[index] = basic;
+        quickSort(array, low, index - 1);
+        quickSort(array, index + 1, high);
     }
 
 
     public static void main(String[] args) {
         int[] array = new int[]{8, 9, 7, 6, 5, 4, 3, 2, 1, 0};
         System.out.println(Arrays.toString(array));
-        ArraySort.insertionSort(array);
+        ArraySort.quickSort(array);
         System.out.println(Arrays.toString(array));
     }
 }
