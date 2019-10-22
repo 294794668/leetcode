@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ArraySort {
 
     /**
-     * 冒泡排序
+     * 1.冒泡排序
      * (1)比较前后相邻的二个数据，如果前面数据大于后面的数据，就将这二个数据交换。
      * (2)这样对数组的第 0 个数据到 N-1 个数据进行一次遍历后，最大的一个数据就“沉”到数组第 N-1 个位置。
      * (3)N=N-1，如果 N 不为 0 就重复前面二步，否则排序完成。
@@ -31,7 +31,30 @@ public class ArraySort {
     }
 
     /**
-     * 插入排序
+     * 2.选择排序
+     */
+    public static void selectionSort(int[] array) {
+        if (array.length <= 1) {
+            return;
+        }
+        for (int i = 0; i < array.length - 1; i++) {
+            int min = array[i];
+            int exchange = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (min > array[j]) {
+                    min = array[j];
+                    exchange = j;
+                }
+            }
+            if (exchange != i) {
+                array[exchange] = array[i];
+                array[i] = min;
+            }
+        }
+    }
+
+    /**
+     * 3.插入排序
      * 通过构建有序序列，对于未排序数据，在已排序序列中从后向前扫描，找到相应的位置并插入。
      */
     public static void insertionSort(int[] array) {
@@ -50,7 +73,7 @@ public class ArraySort {
     }
 
     /**
-     * 快速排序
+     * 4.快速排序
      * 选择一个关键值作为基准值。比基准值小的都在左边序列(一般是无序的)，
      * 比基准值大的都在右边(一般是无序的)。一般选择序列的第一个元素。
      */
@@ -62,6 +85,9 @@ public class ArraySort {
 
     }
 
+    /**
+     * 4.快速排序
+     */
     public static void quickSort(int[] array, int low, int high) {
         if (low >= high) {
             return;
@@ -91,9 +117,10 @@ public class ArraySort {
         quickSort(array, index + 1, high);
     }
 
-
-    //快速排序
-    public static void quick_sort(int s[], int l, int r) {
+    /**
+     * 4.快速排序
+     */
+    public static void quickSort1(int[] s, int l, int r) {
         if (l < r) {
             int i = l, j = r, x = s[l];
             while (i < j) {
@@ -108,16 +135,104 @@ public class ArraySort {
                     s[j--] = s[i];
             }
             s[i] = x;
-            quick_sort(s, l, i - 1); // 递归调用
-            quick_sort(s, i + 1, r);
+            quickSort1(s, l, i - 1); // 递归调用
+            quickSort1(s, i + 1, r);
         }
+    }
+
+    /**
+     * 5.希尔排序
+     * 先将整个待排序的记录序列分割成为若干子序列分别进行直接插入排序，待整个序列
+     * 中的记录“基本有序”时，再对全体记录进行依次直接插入排序。
+     */
+    public static void shellSort(int[] array) {
+        int n = array.length >>> 1;
+        for (int i = n; i >= 1; i >>>= 1) {
+            //间隔为i的插入排序
+            for (int k = i; k < array.length; k++) {
+                int insertVal = array[k];
+                int l = k - i;
+                while (l >= 0 && insertVal < array[l]) {
+                    array[l + i] = array[l];
+                    l -= i;
+                }
+                array[l + i] = insertVal;
+            }
+        }
+    }
+
+    /**
+     * 6.归并排序
+     * 将两个(或两个以上)有序表合并成一个新的有序表，即把待排序序列
+     * 分为若干个子序列，每个子序列是有序的。然后再把有序子序列合并为整体有序序列。
+     */
+    public static void mergeSort(int[] array) {
+        mergeSort(array, 0, array.length - 1);
+    }
+
+    /**
+     * 6.归并排序-拆分
+     */
+    public static void mergeSort(int[] array, int a, int b) {
+        if (b - a > 1) {
+            int split = (b + a) / 2;
+            //超过3个元素 拆分
+            mergeSort(array, a, split, split + 1, b);
+        } else {
+            //2个元素 排序
+            if (array[b] < array[a]) {
+                int i = array[a];
+                array[a] = array[b];
+                array[b] = i;
+            }
+        }
+    }
+
+    /**
+     * 6.归并排序-排序
+     */
+    public static void mergeSort(int[] array, int a1, int a2, int b1, int b2) {
+        mergeSort(array, a1, a2);
+        mergeSort(array, b1, b2);
+        int[] tmpArray = new int[b2 - a1 + 1];
+        int i = 0;
+        int l = a1;//左最小值
+        int r = b1;//右最小猪
+        //最小值放入临时数组 直到末尾元素较小的数组放完
+        while (l <= a2 && r <= b2) {
+            if (array[l] > array[r]) {
+                tmpArray[i++] = array[r++];
+            } else {
+                tmpArray[i++] = array[l++];
+            }
+        }
+        //放完元素较大的末尾数组元素
+        while (l <= a2) {
+            tmpArray[i++] = array[l++];
+        }
+        while (r <= b2) {
+            tmpArray[i++] = array[r++];
+        }
+        System.arraycopy(tmpArray, 0, array, a1, tmpArray.length);
+    }
+
+    /**
+     * 7.桶排序
+     * 把数组 arr 划分为 n 个大小相同子区间(桶)，每个子区间各自排序，最后合并。
+     * 计数排序是桶排序的一种特殊情况，可以把计数排序当成每个桶里只有一个元素的情况。
+     * a.找出待排序数组中的最大值 max、最小值 min
+     * b.我们使用 动态数组 ArrayList 作为桶，桶里放的元素也用 ArrayList 存储。桶的数量为(max- min)/arr.length+1
+     * c.遍历数组 arr，计算每个元素 arr[i] 放的桶
+     */
+    public static void bucketSort(int[] array) {
+
     }
 
 
     public static void main(String[] args) {
         int[] array = new int[]{5, 8, 9, 7, 6, 5, 5, 5, 4, 3, 2, 1, 5, 0};
         System.out.println(Arrays.toString(array));
-        ArraySort.quickSort(array);
+        ArraySort.mergeSort(array);
         System.out.println(Arrays.toString(array));
     }
 }
