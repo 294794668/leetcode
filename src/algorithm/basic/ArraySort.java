@@ -1,5 +1,6 @@
 package algorithm.basic;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -228,11 +229,42 @@ public class ArraySort {
 
     }
 
+    /**
+     * 8.基数排序
+     * 将所有待比较数值（正整数）统一为同样的数位长度，数位较短的数前面补零。
+     * 然后，从最低位开始，依次进行一次排序。
+     * 这样从最低位排序一直到最高位排序完成以后,数列就变成一个有序序列。
+     */
+    public static void radixSort(int[] array) {
+        int max = Integer.MIN_VALUE;
+        for (int i : array) {
+            max = Math.max(max, i);
+        }
+        int length = String.valueOf(max).length();
+        for (int i = 0; i < length; i++) {
+            ArrayList<ArrayList<Integer>> arrayLists = new ArrayList<>(10);
+            for (int j = 0; j < 10; j++) {
+                arrayLists.add(new ArrayList<>());
+            }
+            for (int value : array) {
+                int key = value % (int) Math.pow(10, i + 1) / (int) Math.pow(10, i);
+                arrayLists.get(key).add(value);
+            }
+            int count = 0;
+            for (ArrayList<Integer> arrayList : arrayLists) {
+                for (Integer integer : arrayList) {
+                    array[count++] = integer;
+                }
+            }
+        }
+
+    }
+
 
     public static void main(String[] args) {
         int[] array = new int[]{5, 8, 9, 7, 6, 5, 5, 5, 4, 3, 2, 1, 5, 0};
         System.out.println(Arrays.toString(array));
-        ArraySort.mergeSort(array);
+        ArraySort.radixSort(array);
         System.out.println(Arrays.toString(array));
     }
 }
