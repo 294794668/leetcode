@@ -54,7 +54,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         }
     }
 
-    public int[] binarySearch(int[] nums, int a, int b, int target) {
+    private int[] binarySearch(int[] nums, int a, int b, int target) {
         if (a > b) {
             return new int[]{-1, -1};
         }
