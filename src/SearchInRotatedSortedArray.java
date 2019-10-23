@@ -30,13 +30,44 @@ public class SearchInRotatedSortedArray {
      * 链接：https://leetcode-cn.com/problems/search-in-rotated-sorted-array
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public int search(int[] nums, int target) {
-        int n = nums.length - 1;
-        for (int i = 0; i < nums.length - 1; i++) {
-            if (nums[i] > nums[i + 1]) {
-                return i;
+    public static int search(int[] nums, int target) {
+        if (0 == nums.length) {
+            return -1;
+        }
+        int n = 0;
+        for (int i = 1; i < nums.length - 1; i++) {
+            if (nums[n] > nums[i]) {
+                n = i;
+                break;
             }
         }
-        return 0;
+        if (0 == n) {
+            return binarySearch(nums, 0, nums.length - 1, target);
+        }
+        if (nums[0] == target) {
+            return 0;
+        } else if (target > nums[0]) {
+            return binarySearch(nums, 1, n, target);
+        } else {
+            return binarySearch(nums, n, nums.length - 1, target);
+        }
+    }
+
+    private static int binarySearch(int[] nums, int a, int b, int target) {
+        if (a > b) {
+            return -1;
+        }
+        int middle = (a + b) >>> 1;
+        if (nums[middle] == target) {
+            return middle;
+        } else if (nums[middle] < target) {
+            return binarySearch(nums, middle + 1, b, target);
+        } else {
+            return binarySearch(nums, a, middle - 1, target);
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(search(new int[]{1, 3}, 3));
     }
 }
