@@ -2,6 +2,7 @@ package algorithm.basic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author pengfei.cheng
@@ -198,7 +199,7 @@ public class ArraySort {
         int[] tmpArray = new int[b2 - a1 + 1];
         int i = 0;
         int l = a1;//左最小值
-        int r = b1;//右最小猪
+        int r = b1;//右最小值
         //最小值放入临时数组 直到末尾元素较小的数组放完
         while (l <= a2 && r <= b2) {
             if (array[l] > array[r]) {
@@ -224,9 +225,32 @@ public class ArraySort {
      * a.找出待排序数组中的最大值 max、最小值 min
      * b.我们使用 动态数组 ArrayList 作为桶，桶里放的元素也用 ArrayList 存储。桶的数量为(max- min)/arr.length+1
      * c.遍历数组 arr，计算每个元素 arr[i] 放的桶
+     * b.每个桶各自排序
      */
     public static void bucketSort(int[] array) {
-
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int value : array) {
+            max = Math.max(max, value);
+            min = Math.min(min, value);
+        }
+        //减去min 所以+1
+        int length = (max - min) / array.length + 1;
+        ArrayList<ArrayList<Integer>> buckets = new ArrayList<>(length);
+        for (int i = 0; i < length; i++) {
+            buckets.add(new ArrayList<>());
+        }
+        for (int value : array) {
+            buckets.get((value - min) / array.length).add(value);
+        }
+        int i = 0;
+        for (ArrayList<Integer> bucket : buckets) {
+            //桶内元素排序——省略了
+            Collections.sort(bucket);
+            for (Integer integer : bucket) {
+                array[i++] = integer;
+            }
+        }
     }
 
     /**
@@ -260,11 +284,39 @@ public class ArraySort {
 
     }
 
+    /**
+     * 9.计数排序
+     */
+    public static void countingSort(int[] array) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int value : array) {
+            max = Math.max(max, value);
+            min = Math.min(min, value);
+        }
+        //1.根据待排序集合中最大元素和最小元素的差值范围，申请额外空间；
+        int length = max - min + 1;
+        int[] tmpArray = new int[length];
+        //2.遍历待排序集合，将每一个元素出现的次数记录到元素值对应的额外空间内；
+        for (int val : array) {
+            //3.对额外空间内数据进行计算，得出每一个元素的正确位置；
+            int key = val - min;
+            tmpArray[key] = tmpArray[key] + 1;
+        }
+        int count = 0;
+        //4.将待排序集合每一个元素移动到计算得出的正确位置上。
+        for (int i = 0; i < tmpArray.length; i++) {
+            int integer = tmpArray[i];
+            while (integer-- != 0) {
+                array[count++] = i + min;
+            }
+        }
+    }
 
     public static void main(String[] args) {
-        int[] array = new int[]{5, 8, 9, 7, 6, 5, 5, 5, 4, 3, 2, 1, 5, 0};
+        int[] array = new int[]{5, 8, 9, 7, 6, 5, 5, 5, 4, 3, 2, 1, 5, 0, 99};
         System.out.println(Arrays.toString(array));
-        ArraySort.radixSort(array);
+        ArraySort.countingSort(array);
         System.out.println(Arrays.toString(array));
     }
 }
