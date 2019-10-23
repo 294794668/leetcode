@@ -35,7 +35,7 @@ public class SearchInRotatedSortedArray {
             return -1;
         }
         int n = 0;
-        for (int i = 1; i < nums.length - 1; i++) {
+        for (int i = 1; i < nums.length; i++) {
             if (nums[n] > nums[i]) {
                 n = i;
                 break;
@@ -68,6 +68,6 @@ public class SearchInRotatedSortedArray {
     }
 
     public static void main(String[] args) {
-        System.out.println(search(new int[]{1, 3}, 3));
+        System.out.println(search(new int[]{3, 1}, 1));
     }
 }
