@@ -67,7 +67,7 @@ public class ValidSudoku {
      */
     public static boolean isValidSudoku(char[][] board) {
         ArrayList<HashSet<Character>> hashSets = new ArrayList<>(27);
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < 19; i++) {
             hashSets.add(new HashSet<>());
         }
         for (int x = 0; x < board.length; x++) {
@@ -77,27 +77,28 @@ public class ValidSudoku {
                 if ('.' == board[x][y]) {
                     continue;
                 }
-                if (!hashSets.get(x).add(board[x][y])
-                        || !hashSets.get(y + 9).add(board[x][y])
-                        || !hashSets.get(a + b + 18).add(board[x][y])) {
+                if (!hashSets.get(0).add(board[x][y])
+                        || !hashSets.get(y + 1).add(board[x][y])
+                        || !hashSets.get(a + b + 10).add(board[x][y])) {
                     return false;
                 }
             }
+            hashSets.set(0, new HashSet<>());
         }
         return true;
     }
 
     public static void main(String[] args) {
-        isValidSudoku(new char[][]{
-                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
-                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
-                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
-                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
-                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
-                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
-                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
-                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
-                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
-        });
+        System.out.println(isValidSudoku(new char[][]{
+                {'.', '.', '4', '.', '.', '.', '6', '3', '.'},
+                {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
+                {'5', '.', '.', '.', '.', '.', '.', '9', '.'},
+                {'.', '.', '.', '5', '6', '.', '.', '.', '.'},
+                {'4', '.', '3', '.', '.', '.', '.', '.', '1'},
+                {'.', '.', '.', '7', '.', '.', '.', '.', '.'},
+                {'.', '.', '.', '5', '.', '.', '.', '.', '.'},
+                {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
+                {'.', '.', '.', '.', '.', '.', '.', '.', '.'}
+        }));
     }
 }
