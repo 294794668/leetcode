@@ -48,7 +48,7 @@ public class SearchInsertPosition {
         }
         int middle = (l + r) >>> 1;
         if (nums[middle] > target) {
-            return binarySearch(nums, 0, middle - 1, target);
+            return binarySearch(nums, l, middle - 1, target);
         } else if (nums[middle] < target) {
             return binarySearch(nums, middle + 1, r, target);
         } else {
