@@ -60,7 +60,63 @@ public class RegularExpressionMatching {
      * 链接：https://leetcode-cn.com/problems/regular-expression-matching
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public boolean isMatch(String s, String p) {
-        return true;
+    public static boolean isMatch(String s, String p) {
+        char[] a = s.toCharArray();
+        char[] b = p.toCharArray();
+        int ar = a.length - 1;
+        int br = b.length - 1;
+        while ((ar >= 0 && br >= 0) && (a[ar] == b[br] || b[br] == '.')) {
+            ar--;
+            br--;
+            if (ar == -1 || br == -1) {
+                break;
+            }
+        }
+        if (ar == -1 && br == -1) {
+            return true;
+        }
+        if (ar >= 0 && br == -1) {
+            return false;
+        }
+        if (b[br] != '*') {
+            return false;
+        }
+        return isMatch(a, 0, ar, b, 0, br);
+    }
+
+    private static boolean isMatch(char[] a, int al, int ar, char[] b, int bl, int br) {
+        if (al > ar) {
+            if (bl < br) {
+                int j = '*' == b[bl] ? 0 : 1;
+                for (int i = bl + j; i <= br; i += 2) {
+                    if (b[i] != '*') {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        if (bl > br) {
+            return false;
+        }
+        if (a[al] == b[bl] || b[bl] == '.') {
+            return isMatch(a, ++al, ar, b, ++bl, br);
+        } else if (b[bl] == '*') {
+            //1.停止匹配
+            //2.继续匹配
+            //3.忽略上一个匹配 0匹配
+            int bl1 = bl + 1;
+            int bl2 = bl - 1;
+            return isMatch(a, al, ar, b, bl1, br) || isMatch(a, al, ar, b, bl2, br) || isMatch(a, --al, ar, b, bl1, br);
+        } else {
+            if (b[++bl] == '*') {
+                return isMatch(a, al, ar, b, ++bl, br);
+            }
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isMatch("", "b."));
     }
 }
