@@ -104,9 +104,9 @@ public class RegularExpressionMatching {
             return isMatch(a, ++al, ar, b, ++bl, br);
         } else if (b[bl] == '*') {
             //遇到匹配0或多，出现以下情况
-            //1.停止匹配
-            //2.继续匹配
-            //3.忽略上一个匹配 0匹配————似乎出现重复
+            //1.停止匹配 b++后再匹配
+            //2.继续匹配 b--后再匹配
+            //3.忽略上一个匹配，0匹配 a--匹配回退 b++继续匹配
             int bl1 = bl + 1;
             int bl2 = bl - 1;
             return isMatch(a, al, ar, b, bl1, br) || isMatch(a, al, ar, b, bl2, br) || isMatch(a, --al, ar, b, bl1, br);
