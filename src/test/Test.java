@@ -2,17 +2,14 @@ package test;
 
 public class Test {
     public static void main(String[] args) {
-        int i = 1;
-        System.out.println((++i) + (++i));
-
-        System.out.println(isFalse() & isTrue());
-        System.out.println("------------");
-        System.out.println(isFalse() && isTrue());
-        System.out.println("------------");
-        System.out.println(isTrue() | isFalse());
-        System.out.println("------------");
-        System.out.println(isTrue() || isFalse());
-        System.out.println(~1);
+        int[][] ints = new int[1][1];
+        int[][] ints1 = ints;
+        ints[0][0] = 1;
+        System.out.println(ints1[0][0]);
+        int i = 0;
+        int j = i;
+        i = 1;
+        System.out.println(j);
     }
 
 

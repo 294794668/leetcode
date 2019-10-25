@@ -1,6 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * @author pengfei.cheng
@@ -66,20 +66,19 @@ public class ValidSudoku {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static boolean isValidSudoku(char[][] board) {
-        ArrayList<HashSet<Character>> hashSets = new ArrayList<>(27);
+        ArrayList<HashSet<Character>> hashSets = new ArrayList<>(18);
         for (int i = 0; i < 19; i++) {
             hashSets.add(new HashSet<>());
         }
         for (int x = 0; x < board.length; x++) {
             int a = x / 3;
             for (int y = 0; y < board[x].length; y++) {
-                int b = y / 3 * 3;
                 if ('.' == board[x][y]) {
                     continue;
                 }
                 if (!hashSets.get(0).add(board[x][y])
                         || !hashSets.get(y + 1).add(board[x][y])
-                        || !hashSets.get(a + b + 10).add(board[x][y])) {
+                        || !hashSets.get(a + (y / 3 * 3) + 10).add(board[x][y])) {
                     return false;
                 }
             }
@@ -88,17 +87,50 @@ public class ValidSudoku {
         return true;
     }
 
+    public static boolean isValidSudokuBest(char[][] board) {
+        int[] rows = new int[9];
+        int[] columns = new int[9];
+        int[] boxes = new int[9];
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                char c = board[row][column];
+                if (c == '.') {
+                    continue;
+                }
+                int val = 1 << c - '1';//膜拜大神~ 整形二进制每一位代表一个数字
+                int i = row / 3 * 3 + column / 3;
+                if (((rows[row] | columns[column] | boxes[i]) & val) > 0) {
+                    return false;
+                }
+                rows[row] |= val;
+                columns[column] |= val;
+                boxes[i] |= val;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
-        System.out.println(isValidSudoku(new char[][]{
-                {'.', '.', '4', '.', '.', '.', '6', '3', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'5', '.', '.', '.', '.', '.', '.', '9', '.'},
-                {'.', '.', '.', '5', '6', '.', '.', '.', '.'},
-                {'4', '.', '3', '.', '.', '.', '.', '.', '1'},
-                {'.', '.', '.', '7', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '5', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '.'}
-        }));
+        for (int row = 0; row < 9; row++) {
+            for (int column = 0; column < 9; column++) {
+                int i = row / 3 * 3 + column / 3;
+                System.out.print(row);
+                System.out.print(" ");
+                System.out.print(i);
+                System.out.print(" ");
+                System.out.println(column);
+            }
+        }
+//        System.out.println(isValidSudoku(new char[][]{
+//                {'.', '.', '4', '.', '.', '.', '6', '3', '.'},
+//                {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
+//                {'5', '.', '.', '.', '.', '.', '.', '9', '.'},
+//                {'.', '.', '.', '5', '6', '.', '.', '.', '.'},
+//                {'4', '.', '3', '.', '.', '.', '.', '.', '1'},
+//                {'.', '.', '.', '7', '.', '.', '.', '.', '.'},
+//                {'.', '.', '.', '5', '.', '.', '.', '.', '.'},
+//                {'.', '.', '.', '.', '.', '.', '.', '.', '.'},
+//                {'.', '.', '.', '.', '.', '.', '.', '.', '.'}
+//        }));
     }
 }
