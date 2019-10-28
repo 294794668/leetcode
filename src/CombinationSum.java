@@ -43,6 +43,7 @@ public class CombinationSum {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
         List<List<Integer>> lists = new ArrayList<>();
         for (int i = 0; i < candidates.length; i++) {
             int start = candidates[i];
@@ -51,67 +52,61 @@ public class CombinationSum {
                 break;
             }
             int[] array = new int[a];
-            Arrays.fill(array, i);
-            while (a > 0) {
-                int b = a - 1;
-                int sum = 0;
-                while (b > 0) {
-                    while ((sum = sum(array, a, candidates)) < target) {
-                        if (!arrayPlus(array, a, b, candidates.length - 1)) {
-                            break;
-                        }
-                    }
-                    b--;
-                }
-                if (sum < target) {
-                    break;
-                }
+            for (int j = a; j > 0; j--) {
+                Arrays.fill(array, i);
+                int sum = sum(array, j, candidates);
                 if (sum == target) {
                     List<Integer> list = new ArrayList<>();
-                    for (int j = 0; j < a; j++) {
-                        list.add(candidates[array[j]]);
+                    for (int k = 0; k < j; k++) {
+                        list.add(candidates[array[k]]);
                     }
                     lists.add(list);
                 }
-                a--;
+                while (arrayPlus(array, j, candidates.length - 1)) {
+                    if (sum(array, j, candidates) == target) {
+                        List<Integer> list = new ArrayList<>();
+                        for (int k = 0; k < j; k++) {
+                            list.add(candidates[array[k]]);
+                        }
+                        lists.add(list);
+                    }
+                }
             }
         }
         return lists;
     }
 
-    private static int sum(int[] array, int a, int[] b) {
+    private static int sum(int[] array, int a, int[] candidates) {
         int sum = 0;
         for (int i1 = 0; i1 < a; i1++) {
             int i = array[i1];
-            sum += b[i];
+            sum += candidates[i];
         }
         return sum;
     }
 
-    private static boolean arrayPlus(int[] array, int a, int b, int max) {
+    private static boolean arrayPlus(int[] array, int a, int max) {
         if (a == 1) {
             return false;
         }
-        int i = a - 1;
-        while (i > b) {
+        int i;
+        for (i = a - 1; i > 0; i--) {
             if (array[i] != max) {
-                array[i] = ++array[i];
                 break;
-            } else {
-                i--;
             }
         }
-        if (i == b) {
+        if (i == 0) {
             return false;
         }
-        for (int j = a - 1; j > i; j--) {
-            array[j] = 1;
+        array[i] = ++array[i];
+        for (int j = i + 1; j < a; j++) {
+            array[j] = array[i];
         }
         return true;
     }
 
     public static void main(String[] args) {
-        System.out.println(combinationSum(new int[]{2, 3, 5}, 8));
+        System.out.println(combinationSum(new int[]{6, 7, 3, 2}, 11));
     }
 
 }
