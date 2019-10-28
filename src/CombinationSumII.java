@@ -46,28 +46,53 @@ public class CombinationSumII {
     private static int[] tmp = null;
     private static int tl;//tmp length
 
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+    public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        result.clear();
         tmp = new int[candidates.length];
         combinationSum2(0, candidates, target);
         return result;
     }
 
-    private void combinationSum2(int idx, int[] c, int target) {
+    private static void combinationSum2(int idx, int[] c, int target) {
         if (target == 0) {
             List<Integer> list = new ArrayList<>();
             for (int i = 0; i < tl; i++) {
                 list.add(tmp[i]);
             }
             result.add(list);
+            return;
         }
         //出界返回
         if (idx >= c.length || target < 0) {
             return;
         }
-        tmp[tl++] = c[idx];
-        combinationSum2(idx + 1, c, target - c[idx]);
-        tl--;
+        boolean flagA = false;
+        boolean flagB = true;
+        //组成包括则可以加
+        for (int i = 0; i < tl; i++) {
+            if (tmp[i] == c[idx]) {
+                flagA = true;
+                break;
+            }
+        }
+        //历史用过就跳过
+        for (int i = 0; i < idx; i++) {
+            if (c[i] == c[idx]) {
+                flagB = false;
+                break;
+            }
+        }
+        if (flagA || flagB) {
+            tmp[tl] = c[idx];
+            tl++;
+            combinationSum2(idx + 1, c, target - c[idx]);
+            tl--;
+        }
         combinationSum2(idx + 1, c, target);
+    }
 
+    public static void main(String[] args) {
+        combinationSum2(new int[]{2, 5, 2, 1, 2}, 5);
+        System.out.println(result);
     }
 }
