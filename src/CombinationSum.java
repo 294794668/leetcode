@@ -53,12 +53,15 @@ public class CombinationSum {
             int[] array = new int[a];
             Arrays.fill(array, i);
             while (a > 0) {
-                int b = a;
-                int sum;
-                while ((sum = sum(array, a, candidates)) < target && b >= 1) {
-                    if (!arrayPlus(array, a, b, candidates.length - 1)) {
-                        b--;
+                int b = a - 1;
+                int sum = 0;
+                while (b > 0) {
+                    while ((sum = sum(array, a, candidates)) < target) {
+                        if (!arrayPlus(array, a, b, candidates.length - 1)) {
+                            break;
+                        }
                     }
+                    b--;
                 }
                 if (sum < target) {
                     break;
