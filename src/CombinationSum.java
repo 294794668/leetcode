@@ -105,6 +105,43 @@ public class CombinationSum {
         return true;
     }
 
+
+    public static List<List<Integer>> ans = new ArrayList<>();
+    public static int[] path = new int[100];
+    public static int len;
+
+
+    public List<List<Integer>> combinationSumBest(int[] candidates, int target) {
+        dfs(0, candidates, target);
+        return ans;
+    }
+
+    public static void dfs(int idx, int[] c, int target) {
+        if (target == 0) {
+            List<Integer> tmp = new ArrayList<>();
+            for (int i = 0; i < len; i++) {
+                tmp.add(path[i]);
+            }
+            ans.add(tmp);
+            return;
+        }
+        //出界返回
+        if (idx >= c.length || target < 0) {
+            return;
+        }
+
+        //用当前数
+        path[len] = c[idx];
+        len++;
+        //下次还可以用，状态变化是目标值减少
+        dfs(idx, c, target - c[idx]);
+
+        //不用当前数
+        len--;
+        dfs(idx + 1, c, target);
+
+    }
+
     public static void main(String[] args) {
         System.out.println(combinationSum(new int[]{6, 7, 3, 2}, 11));
     }
