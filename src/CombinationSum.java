@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,9 +42,73 @@ public class CombinationSum {
      * 链接：https://leetcode-cn.com/problems/combination-sum
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> lists = new ArrayList<>();
+        for (int i = 0; i < candidates.length; i++) {
+            int start = candidates[i];
+            int a = target / start;
+            if (a == 0) {
+                break;
+            }
+            int[] array = new int[a];
+            Arrays.fill(array, i);
+            while (a > 0) {
+                int b = a;
+                int sum;
+                while ((sum = sum(array, a, candidates)) < target && b >= 1) {
+                    if (!arrayPlus(array, a, b, candidates.length - 1)) {
+                        b--;
+                    }
+                }
+                if (sum < target) {
+                    break;
+                }
+                if (sum == target) {
+                    List<Integer> list = new ArrayList<>();
+                    for (int j = 0; j < a; j++) {
+                        list.add(candidates[array[j]]);
+                    }
+                    lists.add(list);
+                }
+                a--;
+            }
+        }
+        return lists;
+    }
 
-        return null;
+    private static int sum(int[] array, int a, int[] b) {
+        int sum = 0;
+        for (int i1 = 0; i1 < a; i1++) {
+            int i = array[i1];
+            sum += b[i];
+        }
+        return sum;
+    }
+
+    private static boolean arrayPlus(int[] array, int a, int b, int max) {
+        if (a == 1) {
+            return false;
+        }
+        int i = a - 1;
+        while (i > b) {
+            if (array[i] != max) {
+                array[i] = ++array[i];
+                break;
+            } else {
+                i--;
+            }
+        }
+        if (i == b) {
+            return false;
+        }
+        for (int j = a - 1; j > i; j--) {
+            array[j] = 1;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(combinationSum(new int[]{2, 3, 5}, 8));
     }
 
 }
