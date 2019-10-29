@@ -68,18 +68,20 @@ public class CombinationSumII {
         if (idx >= c.length || target < 0) {
             return;
         }
-        //第一位or第一个非重复的元素开始or
-        if (idx == 0 || (c[idx] != c[idx - 1] && tl == 0)) {
+        if (tmp[tl] != c[idx]) {
             tmp[tl] = c[idx];
             tl++;
             combinationSum2(idx + 1, c, target - c[idx]);
+            if (tmp.length > tl) {
+                tmp[tl] = 0;
+            }
             tl--;
         }
         combinationSum2(idx + 1, c, target);
     }
 
     public static void main(String[] args) {
-        combinationSum2(new int[]{2, 5, 2, 1, 2}, 5);
+        combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8);
         System.out.println(result);
     }
 }
