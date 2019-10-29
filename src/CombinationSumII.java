@@ -43,19 +43,18 @@ public class CombinationSumII {
      * 链接：https://leetcode-cn.com/problems/combination-sum-ii
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    private static List<List<Integer>> result = new ArrayList<>();
     private static int[] tmp = null;
     private static int tl;//tmp length
 
     public static List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        result.clear();
+        List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(candidates);
         tmp = new int[candidates.length];
-        combinationSum2(0, candidates, target);
+        combinationSum2(0, candidates, target, result);
         return result;
     }
 
-    private static void combinationSum2(int idx, int[] c, int target) {
+    private static void combinationSum2(int idx, int[] c, int target, List<List<Integer>> result) {
         if (target == 0) {
             List<Integer> list = new ArrayList<>();
             for (int i = 0; i < tl; i++) {
@@ -71,17 +70,44 @@ public class CombinationSumII {
         if (tmp[tl] != c[idx]) {
             tmp[tl] = c[idx];
             tl++;
-            combinationSum2(idx + 1, c, target - c[idx]);
+            combinationSum2(idx + 1, c, target - c[idx], result);
             if (tmp.length > tl) {
                 tmp[tl] = 0;
             }
             tl--;
         }
-        combinationSum2(idx + 1, c, target);
+        combinationSum2(idx + 1, c, target, result);
     }
 
+
+
+    //best
+    public List<List<Integer>> combinationSum2Best(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        backtrack(candidates, 0, target, new ArrayList<>(), res);
+        return res;
+    }
+
+    private void backtrack(int[] candidates, int start, int target, List<Integer> output, List<List<Integer>> res) {
+        if (target == 0) {
+            res.add(new ArrayList<>(output));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (candidates[i] > target) {
+                break;
+            }
+            if (i > start && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+
+            output.add(candidates[i]);
+            backtrack(candidates, i + 1, target - candidates[i], output, res);
+            output.remove(output.size() - 1);
+        }
+    }
     public static void main(String[] args) {
         combinationSum2(new int[]{10, 1, 2, 7, 6, 1, 5}, 8);
-        System.out.println(result);
     }
 }
