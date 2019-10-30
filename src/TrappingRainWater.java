@@ -21,8 +21,8 @@ public class TrappingRainWater {
     public static int trap(int[] height) {
         int l = 0;
         int r = height.length - 1;
-        int area = 0;
-        int minHighMax = 0;
+        int area = 0;//面积
+        int minHighMax = 0;//最大的不动，记录第二大的数字
         while (l < r) {
             if (height[l] == 0) {
                 l++;
