@@ -24,17 +24,15 @@ public class TrappingRainWater {
         int area = 0;
         int minHighMax = 0;
         while (l < r) {
-            int leftHeight = height[l];
-            if (leftHeight == 0) {
+            if (height[l] == 0) {
                 l++;
                 continue;
             }
-            int rightHeight = height[r];
-            if (rightHeight == 0) {
+            if (height[r] == 0) {
                 r--;
                 continue;
             }
-            int minHeight = Math.min(leftHeight, rightHeight);
+            int minHeight = Math.min(height[l], height[r]);
             if (minHeight <= minHighMax) {
                 area -= minHeight;
             } else {
@@ -43,7 +41,7 @@ public class TrappingRainWater {
                 area += (minHeight - minHighMax) * length;
                 minHighMax = Math.max(minHeight, minHighMax);
             }
-            if (leftHeight < rightHeight) {
+            if (height[l] < height[r]) {
                 l++;
             } else {
                 r--;
