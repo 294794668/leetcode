@@ -67,7 +67,7 @@ public class WildcardMatching {
         }
 
         char[] a = s.toCharArray();
-        char[] b = p.toCharArray();
+        char[] b = p.replaceAll("\\*+", "*").toCharArray();
         int al = 0;
         int bl = 0;
         int ar = a.length - 1;
@@ -110,14 +110,15 @@ public class WildcardMatching {
             //1.停止匹配 b++后再匹配
             //3.忽略上一个匹配，0匹配 a--匹配回退 b++下一个匹配
             int bl1 = bl + 1;
-            return isMatch(a, al, ar, b, bl1, br)  || isMatch(a, al, ar, b, bl1, br);
+            return isMatch(a, al, ar, b, bl1, br)  || isMatch(a, ++al, ar, b, bl, br);
         } else {
             return false;
         }
     }
 
     public static void main(String[] args) {
-        isMatch("", "*");
+        System.out.println("****".replaceAll("\\*+", "*"));
+//        isMatch("", "*");
     }
 
 }
