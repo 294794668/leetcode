@@ -32,16 +32,11 @@ public class FirstMissingPositive {
      */
     public static int firstMissingPositive(int[] nums) {
         int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
         for (int num : nums) {
             if (num <= 0) {
                 continue;
             }
             max = Math.max(num, max);
-            min = Math.min(num, min);
-        }
-        if (min > 1) {
-            return 1;
         }
         int[] tmp = new int[nums.length];
         for (int num : nums) {
