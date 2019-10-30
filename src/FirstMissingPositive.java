@@ -30,9 +30,35 @@ public class FirstMissingPositive {
      * 链接：https://leetcode-cn.com/problems/first-missing-positive
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public int firstMissingPositive(int[] nums) {
-        int min = 1;
+    public static int firstMissingPositive(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for (int num : nums) {
+            if (num <= 0) {
+                continue;
+            }
+            max = Math.max(num, max);
+            min = Math.min(num, min);
+        }
+        if (min > 1) {
+            return 1;
+        }
+        int[] tmp = new int[nums.length];
+        for (int num : nums) {
+            if (num <= 0 || num > nums.length) {
+                continue;
+            }
+            tmp[num - 1] = 1;
+        }
+        for (int i = 0; i < tmp.length; i++) {
+            if (tmp[i] == 0) {
+                return i + 1;
+            }
+        }
+        return nums.length + 1;
+    }
 
-        return min;
+    public static void main(String[] args) {
+        System.out.println(firstMissingPositive(new int[]{1, 2, 0}));
     }
 }
