@@ -28,19 +28,33 @@ public class MultiplyStrings {
      * 链接：https://leetcode-cn.com/problems/multiply-strings
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public String multiply(String num1, String num2) {
+    public static String multiply(String num1, String num2) {
         StringBuilder sb = new StringBuilder();
         char[] aCharArray = num1.toCharArray();
         char[] bCharArray = num2.toCharArray();
-        int max = aCharArray.length + bCharArray.length;
-        int min = Math.min(aCharArray.length, bCharArray.length);
+        int max = aCharArray.length + bCharArray.length - 1;
         int up = 0;
         for (int i = 0; i < max; i++) {
-
+            int sum = 0;
+            if (i < aCharArray.length) {
+                for (int j = 0; j <= i; j++) {
+                    sum += (aCharArray[j] - '0') * (bCharArray[i - j] - '0');
+                }
+                sum += up;
+            } else {
+                int b = i - aCharArray.length;
+                sum = (aCharArray[aCharArray.length - 1] - '0') * (bCharArray[b] - '0') + up;
+            }
+            sb.append(sum % 10);
+            up = sum / 10;
         }
         if (up != 0) {
             sb.append(up);
         }
         return sb.reverse().toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(multiply("999999", "999999999999"));
     }
 }
