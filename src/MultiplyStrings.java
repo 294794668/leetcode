@@ -29,22 +29,26 @@ public class MultiplyStrings {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static String multiply(String num1, String num2) {
+        if ("0".equals(num1) || "0".equals(num2)) {
+            return "0";
+        }
         StringBuilder sb = new StringBuilder();
-        char[] aCharArray = num1.toCharArray();
-        char[] bCharArray = num2.toCharArray();
+        char[] aCharArray = new StringBuilder(num1).reverse().toString().toCharArray();
+        char[] bCharArray = new StringBuilder(num2).reverse().toString().toCharArray();
         int max = aCharArray.length + bCharArray.length - 1;
         int up = 0;
         for (int i = 0; i < max; i++) {
             int sum = 0;
-            if (i < aCharArray.length) {
-                for (int j = 0; j <= i; j++) {
-                    sum += (aCharArray[j] - '0') * (bCharArray[i - j] - '0');
+            for (int j = 0; j <= i; j++) {
+                if (j == aCharArray.length) {
+                    break;
                 }
-                sum += up;
-            } else {
-                int b = i - aCharArray.length;
-                sum = (aCharArray[aCharArray.length - 1] - '0') * (bCharArray[b] - '0') + up;
+                if (i - j >= bCharArray.length) {
+                    continue;
+                }
+                sum += (aCharArray[j] - '0') * (bCharArray[i - j] - '0');
             }
+            sum += up;
             sb.append(sum % 10);
             up = sum / 10;
         }
@@ -55,6 +59,7 @@ public class MultiplyStrings {
     }
 
     public static void main(String[] args) {
-        System.out.println(multiply("999999", "999999999999"));
+        System.out.println(123 * 456);
+        System.out.println(multiply("123", "456"));
     }
 }
