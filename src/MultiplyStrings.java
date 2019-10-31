@@ -59,7 +59,6 @@ public class MultiplyStrings {
     }
 
     public static void main(String[] args) {
-        System.out.println(123 * 456);
-        System.out.println(multiply("123", "456"));
+        System.out.println(multiply("122312313213213141221313", "4533212312232123123123146"));
     }
 }
