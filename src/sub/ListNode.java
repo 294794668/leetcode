@@ -13,4 +13,9 @@ public class ListNode {
     public ListNode(int x) {
         val = x;
     }
+
+    public ListNode add(int x) {
+        next = new ListNode(x);
+        return next;
+    }
 }

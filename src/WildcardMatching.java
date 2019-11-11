@@ -67,7 +67,7 @@ public class WildcardMatching {
         }
 
         char[] a = s.toCharArray();
-        char[] b = p.replaceAll("\\*+", "*").toCharArray();
+        char[] b = p.toCharArray();
         int al = 0;
         int bl = 0;
         int ar = a.length - 1;
@@ -81,6 +81,13 @@ public class WildcardMatching {
             ar--;
             br--;
         }
+        if (br - bl == -1) {
+            return ar - al == -1;
+        }
+        if (b[br] != '*' || b[bl] != '*') {
+            return false;
+        }
+
         return isMatch(a, al, ar, b, bl, br);
 
     }
@@ -103,22 +110,22 @@ public class WildcardMatching {
             return false;
         }
         if (a[al] == b[bl] || b[bl] == '?') {
-            //匹配成功a b都向后移动一位
             return isMatch(a, ++al, ar, b, ++bl, br);
         } else if (b[bl] == '*') {
-            //遇到匹配0或多，出现以下情况
-            //1.停止匹配 b++后再匹配
-            //3.忽略上一个匹配，0匹配 a--匹配回退 b++下一个匹配
-            int bl1 = bl + 1;
-            return isMatch(a, al, ar, b, bl1, br)  || isMatch(a, ++al, ar, b, bl, br);
+            if (bl < br && b[bl + 1] == '*') {
+                bl++;
+            }
+            return isMatch(a, al, ar, b, bl + 1, br) || isMatch(a, al + 1, ar, b, bl, br);
         } else {
             return false;
         }
     }
 
+
     public static void main(String[] args) {
-        System.out.println("****".replaceAll("\\*+", "*"));
-//        isMatch("", "*");
+
+        System.out.println(isMatch("abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
+                "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"));
     }
 
 }
