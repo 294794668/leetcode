@@ -59,73 +59,30 @@ public class WildcardMatching {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static boolean isMatch(String s, String p) {
-        if (s.length() == 0 && p.length() == 0) {
-            return true;
-        }
-        if (p.length() == 0) {
-            return false;
-        }
-
-        char[] a = s.toCharArray();
-        char[] b = p.toCharArray();
-        int al = 0;
-        int bl = 0;
-        int ar = a.length - 1;
-        int br = b.length - 1;
-
-        while (al <= ar && bl <= br && (a[al] == b[bl] || '?' == b[bl])) {
-            al++;
-            bl++;
-        }
-        while (al <= ar && bl <= br && (a[ar] == b[br] || '?' == b[br])) {
-            ar--;
-            br--;
-        }
-        if (br - bl == -1) {
-            return ar - al == -1;
-        }
-        if (b[br] != '*' || b[bl] != '*') {
-            return false;
-        }
-
-        return isMatch(a, al, ar, b, bl, br);
-
-    }
-
-    private static boolean isMatch(char[] a, int al, int ar, char[] b, int bl, int br) {
-        if (al > ar) {
-            //b匹配没有结束，则剩余结构必须是（字母*）或（*字母*）
-            if (bl <= br) {
-                for (int i = bl; i <= br; i++) {
-                    if (b[i] != '*') {
-                        return false;
-                    }
-                }
+        int i = 0, j = 0, m = s.length(), n = p.length();
+        int last = -1;
+        int match = 0;
+        while (i < m) {
+            if (j < n && (s.charAt(i) == p.charAt(j) || '?' == p.charAt(j))) {
+                i++;
+                j++;
+            } else if (j < n && '*' == p.charAt(j)) {
+                last = j;
+                match = i;
+                j++;
+            } else if (last != -1) {
+                j = last;
+                i = ++match;
+            } else {
+                return false;
             }
-            //b也匹配结束
-            return true;
         }
-        //a没结束b结束了。。。失败啊
-        if (bl > br) {
-            return false;
+        while (j < n) {
+            if (p.charAt(j) != '*')
+                return false;
+            j++;
         }
-        if (a[al] == b[bl] || b[bl] == '?') {
-            return isMatch(a, ++al, ar, b, ++bl, br);
-        } else if (b[bl] == '*') {
-            if (bl < br && b[bl + 1] == '*') {
-                bl++;
-            }
-            return isMatch(a, al, ar, b, bl + 1, br) || isMatch(a, al + 1, ar, b, bl, br);
-        } else {
-            return false;
-        }
-    }
-
-
-    public static void main(String[] args) {
-
-        System.out.println(isMatch("abbabaaabbabbaababbabbbbbabbbabbbabaaaaababababbbabababaabbababaabbbbbbaaaabababbbaabbbbaabbbbababababbaabbaababaabbbababababbbbaaabbbbbabaaaabbababbbbaababaabbababbbbbababbbabaaaaaaaabbbbbaabaaababaaaabb",
-                "**aa*****ba*a*bb**aa*ab****a*aaaaaa***a*aaaa**bbabb*b*b**aaaaaaaaa*a********ba*bbb***a*ba*bb*bb**a*b*bb"));
+        return true;
     }
 
 }
