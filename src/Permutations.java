@@ -1,9 +1,7 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author pengfei.cheng
@@ -32,37 +30,42 @@ public class Permutations {
      * 链接：https://leetcode-cn.com/problems/permutations
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public List<List<Integer>> permute(int[] nums) {
-        int size = 1;
-        for (int length = nums.length; length > 0; length--) {
-            size *= length;
+    public void backtrack(int n,
+                          ArrayList<Integer> nums,
+                          List<List<Integer>> output,
+                          int first) {
+        // if all integers are used up
+        if (first == n) {
+            output.add(new ArrayList<>(nums));
         }
-        int length = nums.length;
-        List<List<Integer>> result = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            if (i == 0) {
-                result.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
-                continue;
-            }
+        for (int i = first; i < n; i++) {
+            // place i-th integer first
+            // in the current permutation
+            Collections.swap(nums, first, i);
+            System.out.println(nums + " " + first + " " + i);
+            // use next integers to complete the permutations
+            backtrack(n, nums, output, first + 1);
+            // backtrack
+            Collections.swap(nums, first, i);
         }
+    }
 
-        while (length > 0) {
-            int index = nums.length - length;
-//            for (int k = 1; k <= result.size() / size; k++) {
-//                size /= length;
-//                for (int i = 1; i <= length; i++) {
-//                    for (int j = 1; j <= size; j++) {
-//                        result.get(i * j - 1).set(index, 0);
-//                    }
-//                }
-//            }
-            for (int i = 0; i < size; i++) {
-                int position = 0;
-                List<Integer> list = result.get(i);
-                list.add(index, nums[position]);
-            }
-            length--;
-        }
-        return result;
+    public List<List<Integer>> permute(int[] nums) {
+        // init output list
+        List<List<Integer>> output = new LinkedList<>();
+
+        // convert nums into list since the output is a list of lists
+        ArrayList<Integer> nums_lst = new ArrayList<>();
+        for (int num : nums)
+            nums_lst.add(num);
+
+        int n = nums.length;
+        backtrack(n, nums_lst, output, 0);
+        return output;
+    }
+
+    public static void main(String[] args) {
+        Permutations p = new Permutations();
+        p.permute(new int[]{1, 2, 3, 4, 5});
     }
 }
