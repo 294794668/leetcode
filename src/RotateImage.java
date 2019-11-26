@@ -34,7 +34,20 @@ public class RotateImage {
      * 链接：https://leetcode-cn.com/problems/rotate-image
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    public void rotate(int[][] matrix) {
+    public static void rotate(int[][] matrix) {
+        int num = matrix.length - 1;
+        for (int x = 0; x <= num; x++) {
+            for (int y = 0; x >= y && x + y < num; y++) {
+                int val = matrix[x][y];
+                matrix[x][y] = matrix[num - y][x];
+                matrix[num - y][x] = matrix[num - x][num - y];
+                matrix[num - x][num - y] = matrix[y][num - x];
+                matrix[y][num - x] = val;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
 
     }
 }
