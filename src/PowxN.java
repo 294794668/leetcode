@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * @author pengfei.cheng
  * 50. Pow(x, n)
@@ -33,19 +35,30 @@ public class PowxN {
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
     public static double myPow(double x, int n) {
-        if (n == 0) {
-            return 1;
-        }
-        if (n < 1) {
-            x = 1 / x;
+        double result = 1;
+        double last = 1;
+        boolean b = n < 0;
+        if (b) {
             n = -n;
         }
-        return 0d;
+        char[] nc = Integer.toBinaryString(n).toCharArray();
+        for (int i = nc.length - 1; i >= 0; i--) {
+            if (i == nc.length - 1) {
+                last *= x;
+            } else {
+                last *= last;
+            }
+            if (nc[i] == '1') {
+                result *= last;
+            }
+        }
+        if (b) {
+            result = 1 / result;
+        }
+        return result;
     }
 
     public static void main(String[] args) {
-//        double n = 2.1d;
-//        System.out.println(n << 3);
-//        System.out.println(myPow(1, 2));
+        System.out.println(myPow(3, 3));
     }
 }
