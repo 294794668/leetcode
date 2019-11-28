@@ -28,35 +28,36 @@ public class NQueensII {
      * 链接：https://leetcode-cn.com/problems/n-queens-ii
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
+    private static int result;
+
     public int totalNQueens(int n) {
-        int result = 0;
+        result = 0;
         for (int i = 0; i < n; i++) {
-            result += solveNQueens(0, 0, i, n, 0, 0);
+            solveNQueens(0, 0, i, n, 0, 0);
         }
         return result;
     }
 
-    private int solveNQueens(int column, int x, int y, int n, int lcross, int rcross) {
-        int result = 0;
+    private void solveNQueens(int column, int x, int y, int n, int lcross, int rcross) {
         int nc = column ^ (1 << y);
         if (nc < column) {
-            return 0;
+            return;
         }
         int nlc = lcross ^ (1 << (y + x));
         if (nlc < lcross) {
-            return 0;
+            return;
         }
         int nrc = rcross ^ (1 << (n + y - x));
         if (nrc < rcross) {
-            return 0;
+            return;
         }
         if (x == n - 1) {
-            return 1;
+            result++;
+            return;
         }
         for (int i = 0; i < n; i++) {
-            result += solveNQueens(nc, x + 1, i, n, nlc, nrc);
+            solveNQueens(nc, x + 1, i, n, nlc, nrc);
         }
-        return result;
     }
 
     public static void main(String[] args) {
