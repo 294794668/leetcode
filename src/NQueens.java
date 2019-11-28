@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author pengfei.cheng
@@ -37,15 +36,19 @@ public class NQueens {
      */
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> result = new ArrayList<>();
-        Stack<Integer> stack = new Stack<>();
-//        for (int i = 0; i < n; i++) {
-//            solveNQueens(0, 0, i, 0, n, stack, result);
-//        }
+        Stack<String> stack = new Stack<>();
+        for (int i = 0; i < n; i++) {
+            stack.clear();
+            solveNQueens(0, 0, 0, i, n, 0, 0, stack, result);
+        }
 
         return result;
     }
 
-    private void solveNQueens(int row, int column, int x, int y, int n, Stack<Integer> stack, List<List<String>> result) {
+    private void solveNQueens(int row, int column, int x, int y, int n, int lcross, int rcross,
+                              Stack<String> stack, List<List<String>> result) {
+        stack.push(generateRow(y, n));
+        System.out.println(stack);
         int nr = row ^ (1 << x);
         if (nr <= row) {
             return;
@@ -54,9 +57,32 @@ public class NQueens {
         if (nc <= column) {
             return;
         }
+        int nlc = lcross ^ (1 << (y + x));
+        if (nlc <= lcross) {
+            return;
+        }
+        int nrc = rcross ^ (1 << (y - x + n));
+        if (nrc <= rcross) {
+            return;
+        }
+        if (stack.size() == n) {
+            result.add(new ArrayList<>(stack));
+            return;
+        }
         for (int i = 0; i < n; i++) {
-            solveNQueens(nr, nc, x, i, n, stack, result);
+            solveNQueens(nr, nc, x + 1, i, n, nlc, nrc, stack, result);
+            stack.pop();
         }
     }
 
+    private String generateRow(int y, int n) {
+        char[] chars = new char[n];
+        Arrays.fill(chars, '.');
+        chars[y] = 'Q';
+        return new String(chars);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new NQueens().solveNQueens(4));
+    }
 }
