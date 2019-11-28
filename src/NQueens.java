@@ -49,19 +49,19 @@ public class NQueens {
         stack.push(generateRow(y, n));
         System.out.println(stack);
         int nr = row ^ (1 << x);
-        if (nr <= row) {
+        if (nr < row) {
             return;
         }
         int nc = column ^ (1 << y);
-        if (nc <= column) {
+        if (nc < column) {
             return;
         }
         int nlc = lcross ^ (1 << (y + x));
-        if (nlc <= lcross) {
+        if (nlc < lcross) {
             return;
         }
         int nrc = rcross ^ (1 << (y - x + n));
-        if (nrc <= rcross) {
+        if (nrc < rcross) {
             return;
         }
         if (stack.size() == n) {
