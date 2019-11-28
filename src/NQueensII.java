@@ -28,17 +28,19 @@ public class NQueensII {
      * 链接：https://leetcode-cn.com/problems/n-queens-ii
      * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
      */
-    private static int result;
+    private int result;
+    private int n;
 
     public int totalNQueens(int n) {
         result = 0;
+        this.n = n;
         for (int i = 0; i < n; i++) {
-            solveNQueens(0, 0, i, n, 0, 0);
+            solveNQueens(0, 0, i, 0, 0);
         }
         return result;
     }
 
-    private void solveNQueens(int column, int x, int y, int n, int lcross, int rcross) {
+    private void solveNQueens(int column, int x, int y, int lcross, int rcross) {
         int nc = column ^ (1 << y);
         if (nc < column) {
             return;
@@ -56,7 +58,7 @@ public class NQueensII {
             return;
         }
         for (int i = 0; i < n; i++) {
-            solveNQueens(nc, x + 1, i, n, nlc, nrc);
+            solveNQueens(nc, x + 1, i, nlc, nrc);
         }
     }
 
