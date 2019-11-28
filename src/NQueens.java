@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author pengfei.cheng
@@ -39,19 +38,15 @@ public class NQueens {
         Stack<String> stack = new Stack<>();
         for (int i = 0; i < n; i++) {
             stack.clear();
-            solveNQueens(0, 0, 0, i, n, 0, 0, stack, result);
+            solveNQueens(0, 0, i, n, 0, 0, stack, result);
         }
         return result;
     }
 
-    private void solveNQueens(int row, int column, int x, int y, int n, int lcross, int rcross,
+    private void solveNQueens(int column, int x, int y, int n, int lcross, int rcross,
                               Stack<String> stack, List<List<String>> result) {
         stack.push(generateRow(y, n));
         System.out.println(stack);
-        int nr = row ^ (1 << x);
-        if (nr < row) {
-            return;
-        }
         int nc = column ^ (1 << y);
         if (nc < column) {
             return;
@@ -60,7 +55,7 @@ public class NQueens {
         if (nlc < lcross) {
             return;
         }
-        int nrc = rcross ^ (1 << (y - x + n));
+        int nrc = rcross ^ (1 << (n - 1 + y - x));
         if (nrc < rcross) {
             return;
         }
@@ -69,7 +64,7 @@ public class NQueens {
             return;
         }
         for (int i = 0; i < n; i++) {
-            solveNQueens(nr, nc, x + 1, i, n, nlc, nrc, stack, result);
+            solveNQueens(nc, x + 1, i, n, nlc, nrc, stack, result);
             stack.pop();
         }
     }
