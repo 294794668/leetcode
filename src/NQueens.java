@@ -41,7 +41,6 @@ public class NQueens {
             stack.clear();
             solveNQueens(0, 0, 0, i, n, 0, 0, stack, result);
         }
-
         return result;
     }
 
